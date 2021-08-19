@@ -6,8 +6,8 @@ namespace Tracer {
 namespace BVH {
 
 struct Node {
-  Node(const Bound3 &b, bool flag) : box(b), isLeafe(flag) {}
-  Node(bool flag) : isLeafe(flag) {}
+  BlasCudaConstruc Node(const Bound3 &b, bool flag) : box(b), isLeafe(flag) {}
+  BlasCudaConstruc Node(bool flag) : isLeafe(flag) {}
 
   virtual BlasCudaConstruc Node *getChildLeft() = 0;
   virtual BlasCudaConstruc Node *getChildRight() = 0;
@@ -27,10 +27,10 @@ struct Node {
 };
 
 struct InternalNode : public Node {
-  InternalNode(const Bound3 &b, const Tvec2ui &_range)
+  BlasCudaConstruc InternalNode(const Bound3 &b, const Tvec2ui &_range)
       : Node(b, false), range(_range) {}
 
-  InternalNode() : Node(false) {}
+  BlasCudaConstruc InternalNode() : Node(false) {}
 
   BlasCudaConstruc Node *getChildLeft() { return left; }
 
@@ -41,10 +41,10 @@ struct InternalNode : public Node {
 };
 
 struct LeafeNode : public Node {
-  LeafeNode(const Bound3 &b, Tuint id, Tuint morton_)
+  BlasCudaConstruc LeafeNode(const Bound3 &b, Tuint id, Tuint morton_)
       : Node(b, true), objId(id), morton(morton_) {}
 
-  LeafeNode() : Node(true) {}
+  BlasCudaConstruc LeafeNode() : Node(true) {}
 
   BlasCudaConstruc Node *getChildLeft() { return nullptr; }
 
@@ -55,6 +55,10 @@ struct LeafeNode : public Node {
                                   TriangleIndex *indice) const {
     auto tri = Triangle::GetVertex(vertex, indice, objId);
     return Triangle::Intersect(ray, tri.v1, tri.v2, tri.v3, info);
+  }
+
+  BlasCudaConstruc constexpr bool operator<(const LeafeNode &other) const {
+    return this->morton < other.morton;
   }
 
   Tuint objId, morton;
@@ -107,8 +111,8 @@ __global__ void build(VertexData *tri_vertex, TriangleIndex *tri_indice,
     int dir = 0;
     range[0] = idx;
     if (idx) {
-      dir = __lzcnt(l_nodes[idx].morton ^ l_nodes[idx + 1].morton) -
-                        __lzcnt(l_nodes[idx].morton ^ l_nodes[idx - 1].morton) >
+      dir = __clz(l_nodes[idx].morton ^ l_nodes[idx + 1].morton) -
+                        __clz(l_nodes[idx].morton ^ l_nodes[idx - 1].morton) >
                     0
                 ? 1
                 : -1;
@@ -118,8 +122,12 @@ __global__ void build(VertexData *tri_vertex, TriangleIndex *tri_indice,
       dir = 1;
     }
     auto split = FindSplit(idx, range[1], dir, l_nodes);
-    if (dir < 0)
-      std::swap(range[0], range[1]);
+
+    if (dir < 0) {
+      auto temp = range[0];
+      range[0] = range[1];
+      range[1] = temp;
+    }
 
     i_nodes[idx].range = range;
     i_nodes[idx].left =
@@ -207,9 +215,7 @@ public:
         n);
 
     thrust::sort(leafe_nodes.begin(), leafe_nodes.end(),
-                 [] __host__ __device__(LeafeNode x, LeafeNode y) {
-                   return x.morton < y.morton;
-                 });
+                 thrust::less<LeafeNode>());
 
     internal_nodes[0] = InternalNode(Bound3(), Tvec2ui{0, n - 1});
 

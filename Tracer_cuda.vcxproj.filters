@@ -21,9 +21,6 @@
     <ClCompile Include="GL\display.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="core\scene.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\canvas.h">
@@ -127,6 +124,9 @@
     </CudaCompile>
     <CudaCompile Include="core\bvh\morton.cuh">
       <Filter>头文件</Filter>
+    </CudaCompile>
+    <CudaCompile Include="core\scene.cpp">
+      <Filter>源文件</Filter>
     </CudaCompile>
   </ItemGroup>
 </Project>

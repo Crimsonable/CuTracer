@@ -24,7 +24,7 @@
     <CudaCompile Include="core\gl_cuda_interop.cpp" />
     <CudaCompile Include="core\camera.cpp" />
     <CudaCompile Include="core\triangle.cpp" />
-    <ClCompile Include="core\scene.cpp" />
+    <CudaCompile Include="core\scene.cpp" />
     <ClCompile Include="GL\display.cpp" />
     <ClCompile Include="GL\glad.c" />
     <CudaCompile Include="Expblas\dispatch_gpu.cu" />

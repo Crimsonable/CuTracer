@@ -14,7 +14,8 @@ struct Canvas {
   Expblas::Tensor<TColor, 2, Expblas::Device::GPU> canvas;
   Camera *camera;
   Scene *scene;
-  SceneGPUProxy scene_proxy;
+  thrust::device_vector<SceneGPUProxy> gpu_scene;
+  thrust::device_vector<Camera> gpu_camera;
   Expblas::Shape<2> shape;
   GLuint PBO, texture;
   cudaGraphicsResource_t cudaResources;

@@ -13,8 +13,8 @@
 
 #define Pi 3.14159265358979323846
 #define Delta 1e-6
-#define MAX_MODELS 10
-#define MAX_MESHS 10
+#define MAX_MODELS 5
+#define MAX_MESHS 5
 
 namespace Tracer {
 using Float = float;
