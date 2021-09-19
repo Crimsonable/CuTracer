@@ -1,5 +1,4 @@
 #pragma once
-#include "camera.h"
 #include "model.h"
 
 namespace Tracer {

@@ -1,11 +1,12 @@
 #include "canvas.h"
 #include "gl_cuda_interop.h"
+#include "intersection.h"
 
 using namespace Tracer;
 
 Tracer::Canvas::Canvas(Expblas::Shape<2> _shape, Camera *_camera, Scene *_scene)
     : shape(_shape), canvas(_shape), camera(_camera), scene(_scene),
-      gpu_camera(1) {
+      gpu_camera(1), gpu_scene(1) {
   canvas.data = new Expblas::DenseStorage<TColor, Expblas::Device::GPU>;
   canvas.data->stride = shape[0];
   canvas.data->size = shape.size();
@@ -16,16 +17,14 @@ void Tracer::Canvas::init() {
                sizeof(TColor) * shape[0] * shape[1]);
   Interop_BindBuffer(PBO, cudaResources);
   Interop_CreateTexture(texture, shape[0], shape[1]);
-  gpu_scene.reserve(1);
-  gpu_scene.push_back(SceneGPUProxy(scene->n, scene->models.data()));
+  gpu_scene.SetValue(0, SceneGPUProxy(scene->n, scene->models.data()));
 }
 
 void Tracer::Canvas::cudaDraw() {
   size_t _size = canvas.data->size * sizeof(TColor);
-  gpu_camera[0] = *camera;
+  gpu_camera.SetValue(0, *camera);
   Interop_LockCudaBufferPointer(canvas.data->dataptr, &_size, cudaResources);
-  trace(canvas, thrust::raw_pointer_cast(gpu_camera.data()),
-        thrust::raw_pointer_cast(gpu_scene.data()), shape[0], shape[1]);
+  trace(canvas, gpu_camera.dataptr(), gpu_scene.dataptr(), shape[0], shape[1]);
   Interop_UnlockCudaBufferPointer(cudaResources);
 }
 

@@ -10,20 +10,21 @@
 using namespace Tracer;
 
 int main() {
-  Display dis(WIDTH, HEIGHT, 4);
-  Tracer::Camera camera;
-  Scene scene;
-  Tracer::Canvas canvas(Expblas::Shape<2>({WIDTH, HEIGHT}), &camera, &scene);
-  scene.AddModel("H:/toys/cuda_tracer/Tracer_cuda/model/bunny/reconstruction/"
+   Display dis(WIDTH, HEIGHT, 4);
+   Tracer::Camera camera;
+   Scene scene;
+   Tracer::Canvas canvas(Expblas::Shape<2>({WIDTH, HEIGHT}), &camera, &scene);
+   scene.AddModel("H:/toys/cuda_tracer/Tracer_cuda/model/bunny/reconstruction/"
                  "bun_zipper_res3.ply");
-  canvas.init();
-  dis.setShaders("H:/toys/cuda_tracer/Tracer_cuda/GL/shaders/dis.vs",
+   canvas.init();
+   dis.setShaders("H:/toys/cuda_tracer/Tracer_cuda/GL/shaders/dis.vs",
                  "H:/toys/cuda_tracer/Tracer_cuda/GL/shaders/dis.fs");
 
-  // auto model = Tracer::Model("./model/bunny/reconstruction/bun_zipper.ply");
-  int count = 100;
+  // auto model =
+  Tracer::Model("./model/bunny/reconstruction/bun_zipper.ply");
+   int count = 100;
   // while (!glfwWindowShouldClose(dis.window)) {
-  while (count--) {
+   while (count--) {
     auto t1 = std::chrono::steady_clock::now();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -49,10 +50,10 @@ int main() {
               << "fps" << std::endl;*/
     // system("cls");
   }
-  glDeleteVertexArrays(1, &dis.surfaceVAO);
-  glDeleteBuffers(1, &dis.surfaceVBO);
-  glDeleteBuffers(1, &dis.surfaceEBO);
+   glDeleteVertexArrays(1, &dis.surfaceVAO);
+   glDeleteBuffers(1, &dis.surfaceVBO);
+   glDeleteBuffers(1, &dis.surfaceEBO);
 
-  glfwTerminate();
+   glfwTerminate();
   return 0;
 }

@@ -66,6 +66,8 @@ public:
 
   Tensor(const Shape<Dim> &shape) { this->shape = shape; }
 
+  Tensor() {}
+
   template <typename Exp, OperatorType exp_type>
   BlasForceInline auto &operator=(const ExpBase<Exp, T, exp_type> &exp) {
     return this->assign(exp.derived_to());

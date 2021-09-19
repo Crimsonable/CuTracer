@@ -106,15 +106,15 @@ struct div {
   }
 };
 
-struct max {
+struct _max {
   template <typename T> BlasForceInline BlasCudaFunc static T eval(T v1, T v2) {
-    return std::max(v1, v2);
+    return max(v1, v2);
   }
 };
 
-struct min {
+struct _min {
   template <typename T> BlasForceInline BlasCudaFunc static T eval(T v1, T v2) {
-    return std::min(v1, v2);
+    return min(v1, v2);
   }
 };
 } // namespace Binary

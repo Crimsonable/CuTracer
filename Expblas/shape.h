@@ -99,6 +99,9 @@ template <int N1, int N2> auto ShapeMatch(Shape<N1> s1, Shape<N2> s2) {
   return res;
 }
 
+template <int N1> auto ShapeMatch(Shape<N1> s1, Shape<0> s2) { return s1; }
+template <int N2> auto ShapeMatch(Shape<0> s1, Shape<N2> s2) { return s2; }
+
 struct ShapeCheck {
   template <typename T> static Shape<0> Check(const Scalar<T> &scalar) {
     return Shape<0>();

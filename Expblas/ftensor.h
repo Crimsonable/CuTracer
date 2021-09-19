@@ -209,13 +209,13 @@ BlasForceInline BlasCudaConstruc auto normal(const FTensor<T, N> &v1) {
 template <typename T, size_t... shapes>
 BlasForceInline BlasCudaConstruc auto
 lowerBound(const FTensor<T, shapes...> &v1, const FTensor<T, shapes...> &v2) {
-  return Fixed::element_wise_op<OP::Binary::min>(v1, v2);
+  return Fixed::element_wise_op<OP::Binary::_min>(v1, v2);
 }
 
 template <typename T, size_t... shapes>
 BlasForceInline BlasCudaConstruc auto
 upperBound(const FTensor<T, shapes...> &v1, const FTensor<T, shapes...> &v2) {
-  return Fixed::element_wise_op<OP::Binary::max>(v1, v2);
+  return Fixed::element_wise_op<OP::Binary::_max>(v1, v2);
 }
 
 } // namespace Expblas

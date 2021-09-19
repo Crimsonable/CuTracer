@@ -25,8 +25,14 @@ template <typename T> struct Alloctor<T, Device::CPU> {
       memcpy(target, src, width * height);
       break;
     case Expblas::TransportDir::LocalToDevice:
+#ifdef CUDA_ALIGN_ALLOC
       EXPBLAS_CUDA_CALL(cudaMemcpy2D(target, t_stride, src, s_stride, width,
                                      height, cudaMemcpyHostToDevice));
+#else
+      EXPBLAS_CUDA_CALL(
+          cudaMemcpy(target, src, width * height, cudaMemcpyHostToDevice));
+#endif // CUDA_ALIGN_ALLOC
+
       break;
     default:
       abort();
@@ -53,8 +59,14 @@ template <typename T> struct Alloctor<T, Device::GPU> {
                    size_t width, size_t height, TransportDir method) {
     switch (method) {
     case Expblas::TransportDir::LocalToDevice:
+#ifdef CUDA_ALIGN_ALLOC
       EXPBLAS_CUDA_CALL(cudaMemcpy2D(target, t_stride, src, s_stride, width,
                                      height, cudaMemcpyDeviceToHost));
+#else
+      EXPBLAS_CUDA_CALL(
+          cudaMemcpy(target, src, width * height, cudaMemcpyDeviceToHost));
+#endif // CUDA_ALIGN_ALLOC
+
       break;
     case Expblas::TransportDir::LocalToLocal:
       EXPBLAS_CUDA_CALL(cudaMemcpy2D(target, t_stride, src, s_stride, width,

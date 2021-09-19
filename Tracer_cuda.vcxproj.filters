@@ -26,9 +26,6 @@
     <ClInclude Include="core\canvas.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="core\base.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="Expblas\base.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -83,19 +80,19 @@
     <ClInclude Include="core\model.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="core\camera.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Expblas\ftensor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="core\intersection.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="core\triangle.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="core\scene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="core\base.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="core\bvh\bvh.cuh">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -113,13 +110,7 @@
     <CudaCompile Include="core\gl_cuda_interop.cpp">
       <Filter>源文件</Filter>
     </CudaCompile>
-    <CudaCompile Include="core\camera.cpp">
-      <Filter>源文件</Filter>
-    </CudaCompile>
-    <CudaCompile Include="core\triangle.cpp">
-      <Filter>源文件</Filter>
-    </CudaCompile>
-    <CudaCompile Include="core\bvh\bvh.cuh">
+    <CudaCompile Include="core\bvh\bvh.cu">
       <Filter>头文件</Filter>
     </CudaCompile>
     <CudaCompile Include="core\bvh\morton.cuh">
@@ -127,6 +118,12 @@
     </CudaCompile>
     <CudaCompile Include="core\scene.cpp">
       <Filter>源文件</Filter>
+    </CudaCompile>
+    <CudaCompile Include="core\intersection.h">
+      <Filter>头文件</Filter>
+    </CudaCompile>
+    <CudaCompile Include="core\camera.h">
+      <Filter>头文件</Filter>
     </CudaCompile>
   </ItemGroup>
 </Project>

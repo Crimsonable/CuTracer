@@ -11,12 +11,12 @@ inline BlasCudaConstruc Tuint ExpandBits(Tuint v) {
 }
 
 inline BlasCudaConstruc Tuint CalMortonCode(const Tvec3f &v) {
-  auto x = std::min(std::max(v[0] * 1024.0f, 0.0f), 1023.0f);
-  auto y = std::min(std::max(v[1] * 1024.0f, 0.0f), 1023.0f);
-  auto z = std::min(std::max(v[2] * 1024.0f, 0.0f), 1023.0f);
-  Tuint xx = ExpandBits((Tuint)v[0]);
-  Tuint yy = ExpandBits((Tuint)v[1]);
-  Tuint zz = ExpandBits((Tuint)v[2]);
+  auto x = fminf(fmaxf((v[0]+0.5) * 1024.0f, 0.0f), 1023.0f);
+  auto y = fminf(fmaxf((v[1]+0.5) * 1024.0f, 0.0f), 1023.0f);
+  auto z = fminf(fmaxf((v[2]+0.5) * 1024.0f, 0.0f), 1023.0f);
+  Tuint xx = ExpandBits((Tuint)x);
+  Tuint yy = ExpandBits((Tuint)y);
+  Tuint zz = ExpandBits((Tuint)z);
   return (xx * 4 + yy * 2 + zz);
 }
 } // namespace Tracer

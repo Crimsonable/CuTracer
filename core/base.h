@@ -5,9 +5,9 @@
 #include "../GL/GLheaders.h"
 #include <cmath>
 #include <cuda/cuda_gl_interop.h>
-#include <cuda/thrust/device_vector.h>
-#include <cuda/thrust/sort.h>
-#include <thrust/device_ptr.h>
+//#include <cuda/thrust/device_vector.h>
+//#include <cuda/thrust/sort.h>
+//#include <thrust/device_ptr.h>
 #include <vector>
 //#include <cuda/thrust/host_vector.h>
 
@@ -15,6 +15,37 @@
 #define Delta 1e-6
 #define MAX_MODELS 5
 #define MAX_MESHS 5
+
+namespace Expblas {
+template <typename T> class device_vector : public Tensor<T, 2, Device::GPU> {
+public:
+  device_vector(size_t n) : Tensor<T, 2, Device::GPU>(Shape<2>({1, n})) {
+    allocSpace(*this);
+  }
+
+  device_vector(size_t n, T val) : Tensor<T, 1, Device::GPU>(Shape<2>({1, n})) {
+    allocSpace(*this);
+    init(*this, val);
+  }
+
+  device_vector() : Tensor<T, 2, Device::GPU>() {}
+
+  //~device_vector() { freeSpace(*this); }
+
+  void SetValue(size_t idx, T src) {
+    cudaMemcpy(this->dataptr() + idx, &src, 1, cudaMemcpyHostToDevice);
+  }
+
+  /*T operator[](size_t idx) const { return this->eval(0, idx); }
+
+  T &operator[](size_t idx) { return this->eval_ref(0, idx); }*/
+
+  void reserve(size_t n) {
+    this->shape = Shape<2>({1, n});
+    allocSpace(*this);
+  }
+};
+} // namespace Expblas
 
 namespace Tracer {
 using Float = float;
@@ -42,9 +73,10 @@ struct Ray {
 template <int N> struct Bound;
 
 template <> struct Bound<3> {
-  Bound(const Tvec3f &pmin, const Tvec3f &pmax) : pMin(pmin), pMax(pmax) {}
+  BlasCudaConstruc Bound(const Tvec3f &pmin, const Tvec3f &pmax)
+      : pMin(pmin), pMax(pmax) {}
 
-  Bound() : pMax{0, 0, 0}, pMin{0, 0, 0} {}
+  BlasCudaConstruc Bound() : pMax{0, 0, 0}, pMin{0, 0, 0} {}
 
   BlasCudaConstruc Bound<3> Union(const Bound<3> &_b) const {
     Bound<3> res;
@@ -87,5 +119,8 @@ struct IntersectInfo {
   Tvec3f normal;
   Tvec2f uv;
 };
+
+using VertexInfo = std::pair<VertexData *, size_t>;
+using IndiceInfo = std::pair<Tuint *, size_t>;
 
 } // namespace Tracer

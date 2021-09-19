@@ -22,8 +22,6 @@
     <CudaCompile Include="core\canvas.cpp" />
     <CudaCompile Include="core\model.cpp" />
     <CudaCompile Include="core\gl_cuda_interop.cpp" />
-    <CudaCompile Include="core\camera.cpp" />
-    <CudaCompile Include="core\triangle.cpp" />
     <CudaCompile Include="core\scene.cpp" />
     <ClCompile Include="GL\display.cpp" />
     <ClCompile Include="GL\glad.c" />
@@ -32,14 +30,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\base.h" />
-    <CudaCompile Include="core\bvh\bvh.cuh">
+    <CudaCompile Include="core\bvh\bvh.cu">
       <FileType>CppHeader</FileType>
     </CudaCompile>
     <CudaCompile Include="core\bvh\morton.cuh" />
-    <ClInclude Include="core\camera.h" />
+    <ClInclude Include="core\bvh\bvh.cuh" />
+    <CudaCompile Include="core\camera.h" />
     <ClInclude Include="core\canvas.h" />
     <ClInclude Include="core\gl_cuda_interop.h" />
-    <ClInclude Include="core\intersection.h" />
+    <CudaCompile Include="core\intersection.h" />
     <ClInclude Include="core\model.h" />
     <ClInclude Include="core\scene.h" />
     <ClInclude Include="core\triangle.h" />

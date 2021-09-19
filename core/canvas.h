@@ -1,5 +1,5 @@
 #include "base.h"
-#include "intersection.h"
+#include "camera.h"
 #include "scene.h"
 
 namespace Tracer {
@@ -14,8 +14,8 @@ struct Canvas {
   Expblas::Tensor<TColor, 2, Expblas::Device::GPU> canvas;
   Camera *camera;
   Scene *scene;
-  thrust::device_vector<SceneGPUProxy> gpu_scene;
-  thrust::device_vector<Camera> gpu_camera;
+  Expblas::device_vector<SceneGPUProxy> gpu_scene;
+  Expblas::device_vector<Camera> gpu_camera;
   Expblas::Shape<2> shape;
   GLuint PBO, texture;
   cudaGraphicsResource_t cudaResources;
